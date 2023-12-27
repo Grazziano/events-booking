@@ -5,9 +5,7 @@ export default function Home() {
     <div className="p-10">
       <h1>Events Booking</h1>
 
-      <Button color="primary" variant="bordered">
-        Click Me
-      </Button>
+      <Button color="primary">Click Me</Button>
     </div>
   );
 }

@@ -9,7 +9,23 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
-  theme: {},
-  plugins: [nextui()],
+  theme: {
+    extend: {
+      colors: {
+        primary: '#000',
+      },
+    },
+  },
+  plugins: [
+    nextui({
+      layout: {
+        radius: {
+          small: '2px',
+          medium: '2px',
+          large: '2px',
+        },
+      },
+    }),
+  ],
 };
 export default config;
