@@ -1,4 +1,5 @@
 import { Button } from '@nextui-org/button';
+import { UserButton } from '@clerk/nextjs';
 
 export default function Home() {
   return (
@@ -6,6 +7,7 @@ export default function Home() {
       <h1>Events Booking</h1>
 
       <Button color="primary">Click Me</Button>
+      <UserButton afterSignOutUrl="/" />
     </div>
   );
 }
