@@ -42,6 +42,8 @@ export default function Steps({
           );
         })}
       </div>
+
+      <div className="mt-5">{stepsContent[activeStep]}</div>
     </div>
   );
 }

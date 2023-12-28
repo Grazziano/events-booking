@@ -8,19 +8,33 @@ import Tickets from './Tickets';
 
 export default function EventForm() {
   const [activeStep, setActiveStep] = useState<number>(0);
+  const [event, setEvent] = useState<any>(null);
+
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
+  };
+
+  const commomProps = {
+    event,
+    setEvent,
+    activeStep,
+    setActiveStep,
+  };
 
   return (
     <div>
-      <Steps
-        stepNames={['General', 'Location & Date', 'Media', 'Tickets']}
-        stepsContent={[
-          <General />,
-          <LocationAndDate />,
-          <Media />,
-          <Tickets />,
-        ]}
-        activeStep={activeStep}
-      />
+      <form onSubmit={onSubmit}>
+        <Steps
+          stepNames={['General', 'Location & Date', 'Media', 'Tickets']}
+          stepsContent={[
+            <General {...commomProps} />,
+            <LocationAndDate {...commomProps} />,
+            <Media {...commomProps} />,
+            <Tickets {...commomProps} />,
+          ]}
+          activeStep={activeStep}
+        />
+      </form>
     </div>
   );
 }
