@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IChildrenProps } from '@/interfaces';
 import { UserButton } from '@clerk/nextjs';
 import {
@@ -9,31 +9,84 @@ import {
   DropdownItem,
   Button,
 } from '@nextui-org/react';
+import { usePathname, useRouter } from 'next/navigation';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+
+interface IMenus {
+  title: string;
+  path: string;
+}
 
 export default function LayoutProvider({ children }: IChildrenProps) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const [menusToShow, setMenusToShow] = useState<IMenus[]>([]);
+  const isPrivateRoute = !['/sign-in', '/sign-up'].includes(pathname);
+
+  const menusForAdmin = [
+    { title: 'Home', path: '/' },
+    { title: 'Events', path: '/admin/events' },
+    { title: 'Bookings', path: '/admin/bookings' },
+    { title: 'Users', path: '/admin/users' },
+    { title: 'Reports', path: '/admin/reports' },
+  ];
+
+  const menusForUser = [
+    { title: 'Home', path: '/' },
+    { title: 'Bookings', path: '/user/bookings' },
+  ];
+
+  const getUsersData = async () => {
+    try {
+      const response = await axios.get('/api/current-user');
+
+      if (response.data.user.isAdmin) {
+        setMenusToShow(menusForAdmin);
+      } else {
+        setMenusToShow(menusForUser);
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (isPrivateRoute) {
+      getUsersData();
+    }
+  }, []);
+
   return (
     <div className="bg-gray-200 h-screen lg:px-20 px-5">
-      <div className="bg-white flex justify-between items-center shadow p-3">
-        <h1 className="text-gray-600 font-semibold text-2xl">Events Booking</h1>
+      {isPrivateRoute && (
+        <div className="bg-white flex justify-between items-center shadow p-3">
+          <h1 className="text-gray-600 font-semibold text-2xl">
+            Events Booking
+          </h1>
 
-        <div className="flex gap-5 items-center">
-          <Dropdown>
-            <DropdownTrigger>
-              <Button variant="bordered">Profile</Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Static Actions">
-              <DropdownItem key="new">New file</DropdownItem>
-              <DropdownItem key="copy">Copy link</DropdownItem>
-              <DropdownItem key="edit">Edit file</DropdownItem>
-              <DropdownItem key="delete" className="text-danger" color="danger">
-                Delete file
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+          <div className="flex gap-5 items-center">
+            <Dropdown>
+              <DropdownTrigger>
+                <Button variant="bordered">Profile</Button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Static Actions">
+                {menusToShow.map((menu) => (
+                  <DropdownItem
+                    key={menu.title}
+                    onClick={() => router.push(menu.path)}
+                  >
+                    {menu.title}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
 
-          <UserButton afterSignOutUrl="/" />
+            <UserButton afterSignOutUrl="/" />
+          </div>
         </div>
-      </div>
+      )}
+
       <div className="p-3">{children}</div>
     </div>
   );
