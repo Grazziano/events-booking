@@ -62,7 +62,7 @@ export default function LayoutProvider({ children }: IChildrenProps) {
       {isPrivateRoute && (
         <div className="bg-white flex justify-between items-center shadow px-3 py-5">
           <h1
-            className="font-semibold text-2xl cursor-pointer"
+            className="font-semibold text-2xl cursor-pointer text-blue-900"
             onClick={() => router.push('/')}
           >
             Events Booking
