@@ -33,8 +33,12 @@ export default function Steps({
                   {index + 1}
                 </div>
 
-                {activeStep >= index && activeStep !== stepName.length - 1 && (
+                {activeStep > index && activeStep !== stepNames.length - 1 && (
                   <div className="h-1 w-full bg-black"></div>
+                )}
+
+                {activeStep <= index && index !== stepNames.length - 1 && (
+                  <div className="h-1 w-full bg-gray-200"></div>
                 )}
               </div>
               <h1 className="text-sm">{stepName}</h1>

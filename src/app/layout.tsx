@@ -15,7 +15,7 @@ export default function RootLayout({ children }: IChildrenProps) {
   return (
     <ClerkProvider>
       <html lang="en">
-        <body>
+        <body className="bg-gray-200 h-screen">
           <UiLibraryProvider>
             <LayoutProvider>{children}</LayoutProvider>
           </UiLibraryProvider>
