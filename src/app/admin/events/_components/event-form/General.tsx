@@ -20,7 +20,7 @@ export default function General({
     return {
       labelPlacement: 'outside',
       value: event?.[name],
-      onchange: (e: any) => setEvent({ ...event, [name]: e.target.value }),
+      onChange: (e: any) => setEvent({ ...event, [name]: e.target.value }),
       isRequired: true,
     } as any;
   };
