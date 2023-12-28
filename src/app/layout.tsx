@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import 'remixicon/fonts/remixicon.css';
 import { IChildrenProps } from '@/interfaces';
 import UiLibraryProvider from '@/providers/UiLibraryProvider';
 import { ClerkProvider } from '@clerk/nextjs';
