@@ -1,15 +1,19 @@
 import { Button } from '@nextui-org/button';
 import { UserButton } from '@clerk/nextjs';
 import { connectDB } from '@/config/dbConfig';
-import { auth, currentUser } from '@clerk/nextjs/server';
+import {
+  getMongoDBUserIDOfLoggedInUser,
+  handleNewUserRegistration,
+} from '@/actions/users';
 
 connectDB();
 
 export default async function Home() {
-  const { userId } = auth();
-  console.log(userId);
-  const user = await currentUser();
-  console.log(user?.username);
+  await handleNewUserRegistration();
+
+  const mongoUserId = await getMongoDBUserIDOfLoggedInUser();
+
+  console.log(mongoUserId);
 
   return (
     <div className="p-10">
