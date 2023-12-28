@@ -3,6 +3,7 @@ import './globals.css';
 import { IChildrenProps } from '@/interfaces';
 import UiLibraryProvider from '@/providers/UiLibraryProvider';
 import { ClerkProvider } from '@clerk/nextjs';
+import LayoutProvider from '@/providers/LayoutProvider';
 
 export const metadata: Metadata = {
   title: 'Events Booking',
@@ -14,7 +15,9 @@ export default function RootLayout({ children }: IChildrenProps) {
     <ClerkProvider>
       <html lang="en">
         <body>
-          <UiLibraryProvider>{children}</UiLibraryProvider>
+          <UiLibraryProvider>
+            <LayoutProvider>{children}</LayoutProvider>
+          </UiLibraryProvider>
         </body>
       </html>
     </ClerkProvider>

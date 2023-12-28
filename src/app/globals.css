@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap');
+
 .cl-internal-b3fm6y {
   display: none;
+}
+
+* {
+  font-family: 'Montserrat', sans-serif;
 }

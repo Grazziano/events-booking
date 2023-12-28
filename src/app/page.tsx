@@ -1,5 +1,3 @@
-import { Button } from '@nextui-org/button';
-import { UserButton } from '@clerk/nextjs';
 import { connectDB } from '@/config/dbConfig';
 import {
   getMongoDBUserIDOfLoggedInUser,
@@ -16,11 +14,8 @@ export default async function Home() {
   console.log(mongoUserId);
 
   return (
-    <div className="p-10">
-      <h1>Events Booking</h1>
-
-      <Button color="primary">Click Me</Button>
-      <UserButton afterSignOutUrl="/" />
+    <div>
+      <h1>Homepage</h1>
     </div>
   );
 }
