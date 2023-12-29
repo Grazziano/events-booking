@@ -13,6 +13,7 @@
     "@nextui-org/react": "^2.2.9",
     "axios": "^1.6.3",
     "dayjs": "^1.11.10",
+    "firebase": "^10.7.1",
     "framer-motion": "^10.16.16",
     "mongoose": "^8.0.3",
     "next": "14.0.4",
