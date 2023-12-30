@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { EventType } from '@/interfaces/events';
 import {
   Table,
@@ -11,9 +11,30 @@ import {
   Button,
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+import axios from 'axios';
 
 export default function EventsTable({ events }: { events: EventType[] }) {
   const router = useRouter();
+  const [selectedIdToDelete, setSelectedIdToDelete] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const onDelete = async (id: string) => {
+    try {
+      setLoading(true);
+
+      await axios.delete(`/api/admin/events/${id}`);
+
+      toast.success('Event deleted successfully');
+
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setSelectedIdToDelete('');
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="mt-5">
@@ -37,8 +58,18 @@ export default function EventsTable({ events }: { events: EventType[] }) {
               <TableCell>{event.location}</TableCell>
               <TableCell>
                 <div className="flex gap-5">
-                  <Button isIconOnly size="sm">
-                    <i className="ri-delete-bin-line"></i>
+                  <Button
+                    isIconOnly
+                    size="sm"
+                    onClick={() => {
+                      setSelectedIdToDelete(event._id);
+                      onDelete(event._id);
+                    }}
+                    isLoading={loading && selectedIdToDelete === event._id}
+                  >
+                    {selectedIdToDelete !== event._id && (
+                      <i className="ri-delete-bin-line"></i>
+                    )}
                   </Button>
                   <Button
                     isIconOnly
