@@ -9,6 +9,8 @@ export default function Media({
   event,
   activeStep,
   setActiveStep,
+  alreadyUploadedImages,
+  setAlreadyUploadedImages,
 }: EventFormStepProps) {
   const uploadFilesRef = useRef<HTMLInputElement>(null);
 
@@ -36,6 +38,12 @@ export default function Media({
     setNewlySelectedImages(tempImages);
   };
 
+  const onAlreadyUploadRemove = (index: number) => {
+    const tempImages: string[] = [...alreadyUploadedImages];
+    tempImages.splice(index, 1);
+    setAlreadyUploadedImages(tempImages);
+  };
+
   return (
     <div className="flex flex-col gap-5">
       <div className="w-max">
@@ -52,6 +60,23 @@ export default function Media({
 
       {/* Show the newly selected images */}
       <div className="flex gap-5">
+        {alreadyUploadedImages?.map((image: any, index: number) => (
+          <div className="border flex flex-col gap-5 rounded pb-5">
+            <img
+              key={index}
+              src={image}
+              alt="newly selected"
+              className="w-40 h-40 object-cover"
+            />
+            <h1
+              className="text-center cursor-pointer underline text-sm"
+              onClick={() => onAlreadyUploadRemove(index)}
+            >
+              Remove
+            </h1>
+          </div>
+        ))}
+
         {newlySelectedImages?.map((image: any, index: number) => (
           <div className="border flex flex-col gap-5 rounded pb-5">
             <img

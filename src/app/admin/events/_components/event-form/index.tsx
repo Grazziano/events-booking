@@ -16,6 +16,9 @@ interface Props {
 }
 
 export default function EventForm({ initialData, type = 'create' }: Props) {
+  const [alreadyUploadedImages, setAlreadyUploadedImages] = useState<string[]>(
+    []
+  );
   const [activeStep, setActiveStep] = useState<number>(0);
   const [newlySelectedImages, setNewlySelectedImages] = useState<any[]>([]);
   const [event, setEvent] = useState<any>(null);
@@ -48,12 +51,17 @@ export default function EventForm({ initialData, type = 'create' }: Props) {
     setActiveStep,
     newlySelectedImages,
     setNewlySelectedImages,
+
+    alreadyUploadedImages,
+    setAlreadyUploadedImages,
+
     loading,
   };
 
   useEffect(() => {
     if (initialData) {
       setEvent(initialData);
+      setAlreadyUploadedImages(initialData.images);
     }
   }, [initialData]);
 
