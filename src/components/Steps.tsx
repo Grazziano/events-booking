@@ -33,7 +33,7 @@ export default function Steps({
                   {index + 1}
                 </div>
 
-                {activeStep > index && activeStep !== stepNames.length - 1 && (
+                {activeStep > index && index !== stepNames.length - 1 && (
                   <div className="h-1 w-full bg-black"></div>
                 )}
 

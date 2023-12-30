@@ -1,6 +1,122 @@
 import React from 'react';
 import { EventFormStepProps } from './General';
+import { Button, Input } from '@nextui-org/react';
+import toast from 'react-hot-toast';
 
-export default function Tickets({}: EventFormStepProps) {
-  return <div>Tickets</div>;
+interface TicketPropertyInterface {
+  index: number;
+  property: string;
+  value: any;
+}
+
+export default function Tickets({
+  event,
+  setEvent,
+  activeStep,
+  setActiveStep,
+}: EventFormStepProps) {
+  const onAddTicketType = () => {
+    try {
+      const tempEvent = { ...event };
+
+      if (event.ticketTypes) {
+        tempEvent.ticketTypes.push({
+          name: '',
+          price: 0,
+          limit: 0,
+        });
+      } else {
+        tempEvent.ticketTypes = [{ name: '', price: 0, limit: 0 }];
+      }
+
+      setEvent(tempEvent);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
+  const onTicketPropertyChange = ({
+    index,
+    property,
+    value,
+  }: TicketPropertyInterface) => {
+    const tempEvent = { ...event };
+    tempEvent.ticketTypes[index][property] = value;
+    setEvent(tempEvent);
+  };
+
+  const onTicketTypeDelete = (index: number) => {
+    const tempEvent = { ...event };
+    tempEvent.ticketTypes.splice(index, 1);
+    setEvent(tempEvent);
+  };
+
+  return (
+    <div>
+      {event.ticketTypes && event.ticketTypes.length > 0 && (
+        <div className="flex flex-col gap-5">
+          <div className="grid grid-cols-4 font-semibold rounded justify-between p-2 gap-5">
+            {['Name', 'Price', 'Limit'].map((item: string, index: number) => (
+              <h1 key={index} className="font-semibold">
+                {item}
+              </h1>
+            ))}
+          </div>
+
+          {event.ticketTypes.map((ticketType: any, index: number) => (
+            <div className="grid grid-cols-4 p-2 gap-5" key={index}>
+              <Input
+                placeholder="Name"
+                onChange={(e) =>
+                  onTicketPropertyChange({
+                    index,
+                    property: 'name',
+                    value: e.target.value,
+                  })
+                }
+                value={ticketType.name}
+              />
+              <Input
+                placeholder="Price"
+                onChange={(e) =>
+                  onTicketPropertyChange({
+                    index,
+                    property: 'price',
+                    value: e.target.value,
+                  })
+                }
+                value={ticketType.price}
+              />
+              <Input
+                placeholder="Limit"
+                onChange={(e) =>
+                  onTicketPropertyChange({
+                    index,
+                    property: 'limit',
+                    value: e.target.value,
+                  })
+                }
+                value={ticketType.limit}
+              />
+
+              <Button isIconOnly onClick={() => onTicketTypeDelete(index)}>
+                <i className="ri-delete-bin-line"></i>
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <Button className="mt-10" onClick={onAddTicketType}>
+        Add Ticket Type
+      </Button>
+
+      <div className="flex justify-center gap-5">
+        <Button onClick={() => setActiveStep(activeStep - 1)}>Back</Button>
+        <Button onClick={() => setActiveStep(activeStep + 1)} color="primary">
+          Save
+        </Button>
+      </div>
+    </div>
+  );
 }

@@ -6,6 +6,9 @@ import toast from 'react-hot-toast';
 export default function Media({
   newlySelectedImages,
   setNewlySelectedImages,
+  event,
+  activeStep,
+  setActiveStep,
 }: EventFormStepProps) {
   const uploadFilesRef = useRef<HTMLInputElement>(null);
 
@@ -65,6 +68,13 @@ export default function Media({
             </h1>
           </div>
         ))}
+      </div>
+
+      <div className="flex justify-center gap-5">
+        <Button onClick={() => setActiveStep(activeStep - 1)}>Back</Button>
+        <Button onClick={() => setActiveStep(activeStep + 1)} color="primary">
+          Next
+        </Button>
       </div>
     </div>
   );
