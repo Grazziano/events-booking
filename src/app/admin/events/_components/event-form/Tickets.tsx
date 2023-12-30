@@ -14,6 +14,7 @@ export default function Tickets({
   setEvent,
   activeStep,
   setActiveStep,
+  loading,
 }: EventFormStepProps) {
   const onAddTicketType = () => {
     try {
@@ -119,6 +120,7 @@ export default function Tickets({
           type="submit"
           color="primary"
           isDisabled={event?.ticketTypes?.length === 0}
+          isLoading={loading}
         >
           Submit
         </Button>
