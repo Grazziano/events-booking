@@ -16,3 +16,7 @@
 .font-semibold {
   font-weight: 700;
 }
+
+th {
+  border-radius: 0 !important;
+}

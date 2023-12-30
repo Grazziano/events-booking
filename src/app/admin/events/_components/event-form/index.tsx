@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Steps from '@/components/Steps';
 import General from './General';
 import LocationAndDate from './LocationAndDate';
@@ -10,7 +10,12 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-export default function EventForm() {
+interface Props {
+  initialData?: any;
+  type?: 'edit' | 'create';
+}
+
+export default function EventForm({ initialData, type = 'create' }: Props) {
   const [activeStep, setActiveStep] = useState<number>(0);
   const [newlySelectedImages, setNewlySelectedImages] = useState<any[]>([]);
   const [event, setEvent] = useState<any>(null);
@@ -45,6 +50,12 @@ export default function EventForm() {
     setNewlySelectedImages,
     loading,
   };
+
+  useEffect(() => {
+    if (initialData) {
+      setEvent(initialData);
+    }
+  }, [initialData]);
 
   return (
     <div>

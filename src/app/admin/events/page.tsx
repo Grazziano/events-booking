@@ -4,6 +4,9 @@ import { Link } from '@nextui-org/react';
 import EventModel from '@/models/event-model';
 import { EventType } from 'firebase/database';
 import EventsTable from './_components/events-table';
+import { connectDB } from '@/config/dbConfig';
+
+connectDB();
 
 export default async function EventsPage() {
   const events: EventType[] = (await EventModel.find().sort({

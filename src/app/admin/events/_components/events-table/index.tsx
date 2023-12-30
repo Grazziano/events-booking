@@ -10,11 +10,14 @@ import {
   TableCell,
   Button,
 } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
 
 export default function EventsTable({ events }: { events: EventType[] }) {
+  const router = useRouter();
+
   return (
     <div className="mt-5">
-      <Table aria-label="Example static collection table">
+      <Table aria-label="Example static collection table" shadow="sm">
         <TableHeader>
           {['Name', 'Organizer', 'Date', 'Time', 'Location', 'Actions'].map(
             (column) => (
@@ -37,7 +40,13 @@ export default function EventsTable({ events }: { events: EventType[] }) {
                   <Button isIconOnly size="sm">
                     <i className="ri-delete-bin-line"></i>
                   </Button>
-                  <Button isIconOnly size="sm">
+                  <Button
+                    isIconOnly
+                    size="sm"
+                    onClick={() =>
+                      router.push(`/admin/events/edit-event/${event._id}`)
+                    }
+                  >
                     <i className="ri-pencil-line"></i>
                   </Button>
                 </div>
