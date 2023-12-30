@@ -82,10 +82,11 @@ export default function Tickets({
                   onTicketPropertyChange({
                     index,
                     property: 'price',
-                    value: e.target.value,
+                    value: Number(e.target.value),
                   })
                 }
                 value={ticketType.price}
+                type="number"
               />
               <Input
                 placeholder="Limit"
@@ -93,10 +94,11 @@ export default function Tickets({
                   onTicketPropertyChange({
                     index,
                     property: 'limit',
-                    value: e.target.value,
+                    value: Number(e.target.value),
                   })
                 }
                 value={ticketType.limit}
+                type="number"
               />
 
               <Button isIconOnly onClick={() => onTicketTypeDelete(index)}>
@@ -113,8 +115,12 @@ export default function Tickets({
 
       <div className="flex justify-center gap-5">
         <Button onClick={() => setActiveStep(activeStep - 1)}>Back</Button>
-        <Button onClick={() => setActiveStep(activeStep + 1)} color="primary">
-          Save
+        <Button
+          type="submit"
+          color="primary"
+          isDisabled={event?.ticketTypes?.length === 0}
+        >
+          Submit
         </Button>
       </div>
     </div>
