@@ -22,7 +22,10 @@ export default async function EditEventPage({ params }: Props) {
       <PageTitle title="Edit Event" />
 
       <div className="bg-white p-5 mt-5">
-        <EventForm initialData={JSON.parse(JSON.stringify(event))} />
+        <EventForm
+          initialData={JSON.parse(JSON.stringify(event))}
+          type="edit"
+        />
       </div>
     </div>
   );

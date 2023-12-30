@@ -29,12 +29,28 @@ export default function EventForm({ initialData, type = 'create' }: Props) {
     try {
       setLoading(true);
       e.preventDefault();
-      event.images = await uploadImagesToFirebaseAndGetUrls(
-        newlySelectedImages.map((image: any) => image.file)
-      );
-      // console.log(event);
-      await axios.post('/api/admin/events', event);
-      toast.success('Event created successfully');
+
+      if (type === 'create') {
+        event.images = await uploadImagesToFirebaseAndGetUrls(
+          newlySelectedImages.map((image: any) => image.file)
+        );
+        // console.log(event);
+        await axios.post('/api/admin/events', event);
+        toast.success('Event created successfully');
+      } else {
+        const newlyUpdateImageUrls = await uploadImagesToFirebaseAndGetUrls(
+          newlySelectedImages.map((image: any) => image.file)
+        );
+        event.images = [...alreadyUploadedImages, ...newlyUpdateImageUrls];
+        console.log('Teste 1', event);
+
+        await axios.put(`/api/admin/events/${event._id}`, event);
+
+        console.log('Teste 2', event);
+
+        toast.success('Event updated successfully');
+      }
+
       router.refresh();
       router.push('/admin/events');
     } catch (error: any) {
