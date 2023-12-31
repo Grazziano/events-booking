@@ -2,6 +2,7 @@ import React from 'react';
 import { connectDB } from '@/config/dbConfig';
 import EventModel from '@/models/event-model';
 import { EventType } from '@/interfaces/events';
+import TicketSelection from '../_components/ticket-selection';
 
 connectDB();
 
@@ -63,9 +64,11 @@ export default async function BookEventPage({ params }: Props) {
 
           <div className="flex flex-col text-sm">
             <h1 className="font-semibold capitalize">Chief Guests</h1>
-            <h1 className="text-gray-600">{event.guests.join(',')}</h1>
+            <h1 className="text-gray-600">{event.guests.join(', ')}</h1>
           </div>
         </div>
+
+        <TicketSelection event={JSON.parse(JSON.stringify(event))} />
       </div>
     </div>
   );
