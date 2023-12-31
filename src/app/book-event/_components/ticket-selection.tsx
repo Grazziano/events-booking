@@ -1,6 +1,7 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { EventType } from '@/interfaces/events';
+import { Button } from '@nextui-org/react';
 
 interface TicketSelectionProps {
   event: EventType;
@@ -11,6 +12,17 @@ export default function TicketSelection({ event }: TicketSelectionProps) {
   const [selectedTicketType, setSelectedTicketType] = useState<string>(
     event.ticketTypes[0].name
   );
+  const [totalAmount, setTotalAmount] = useState<number>(0);
+
+  useEffect(() => {
+    const ticketType = event.ticketTypes.find(
+      (ticketType) => ticketType.name === selectedTicketType
+    );
+
+    if (ticketType) {
+      setTotalAmount(ticketType.price * ticketCount);
+    }
+  }, [ticketCount, selectedTicketType]);
 
   return (
     <div className="mt-7">
@@ -52,6 +64,13 @@ export default function TicketSelection({ event }: TicketSelectionProps) {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="mt-7 bg-gray-100 border border-gray-200 p-3 flex justify-between items-center">
+        <h1 className="font-semibold text-2xl uppercase text-gray-500">
+          Total Amount: $ {totalAmount}
+        </h1>
+        <Button color="primary">Book Now</Button>
       </div>
     </div>
   );
