@@ -2,6 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import { EventType } from '@/interfaces/events';
 import { Button } from '@nextui-org/react';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import PaymentModal from './payment-modal';
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 interface TicketSelectionProps {
   event: EventType;
@@ -13,6 +22,8 @@ export default function TicketSelection({ event }: TicketSelectionProps) {
     event.ticketTypes[0].name
   );
   const [totalAmount, setTotalAmount] = useState<number>(0);
+  const [clientSecret, setClientSecret] = useState<string>('');
+  const [showPaymentModal, setShowPaymentModal] = useState<boolean>(false);
 
   useEffect(() => {
     const ticketType = event.ticketTypes.find(
@@ -23,6 +34,23 @@ export default function TicketSelection({ event }: TicketSelectionProps) {
       setTotalAmount(ticketType.price * ticketCount);
     }
   }, [ticketCount, selectedTicketType]);
+
+  const getClientSecret = async () => {
+    try {
+      const response = await axios.post('/api/stripe/client-secret', {
+        amount: totalAmount * 100,
+      });
+      setClientSecret(response.data.clientSecret);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (showPaymentModal) {
+      getClientSecret();
+    }
+  }, [showPaymentModal]);
 
   return (
     <div className="mt-7">
@@ -35,8 +63,12 @@ export default function TicketSelection({ event }: TicketSelectionProps) {
           {event.ticketTypes.map((ticketType) => (
             <div
               key={ticketType.name}
-              className={`bg-gray-100 border border-gray-200 p-3 rounded-sm cursor-pointer
-              ${selectedTicketType === ticketType.name && 'border-blue-800'}`}
+              className={`bg-gray-100 border p-3 rounded-sm cursor-pointer
+              ${
+                selectedTicketType === ticketType.name
+                  ? 'border-blue-800'
+                  : 'border-gray-200'
+              }`}
               onClick={() => setSelectedTicketType(ticketType.name)}
             >
               <h1 className="font-semibold">{ticketType.name}</h1>
@@ -55,8 +87,12 @@ export default function TicketSelection({ event }: TicketSelectionProps) {
         <div className="flex flex-wrap mt-2">
           {[...Array(10)].map((_, index) => (
             <div
-              className={`bg-gray-100 border border-gray-200 h-12 w-14 rounded-sm flex justify-center items-center cursor-pointer
-              ${ticketCount === index + 1 && 'border-blue-800'}
+              className={`bg-gray-100 border h-12 w-14 rounded-sm flex justify-center items-center cursor-pointer
+              ${
+                ticketCount === index + 1
+                  ? 'border-blue-800'
+                  : 'border-gray-200'
+              }
               `}
               onClick={() => setTicketCount(index + 1)}
             >
@@ -70,8 +106,16 @@ export default function TicketSelection({ event }: TicketSelectionProps) {
         <h1 className="font-semibold text-2xl uppercase text-gray-500">
           Total Amount: $ {totalAmount}
         </h1>
-        <Button color="primary">Book Now</Button>
+        <Button color="primary" onClick={() => setShowPaymentModal(true)}>
+          Book Now
+        </Button>
       </div>
+
+      {showPaymentModal && clientSecret && (
+        <Elements stripe={stripePromise} options={{ clientSecret }}>
+          <PaymentModal />
+        </Elements>
+      )}
     </div>
   );
 }
