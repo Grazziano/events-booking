@@ -14,9 +14,13 @@ const stripePromise = loadStripe(
 
 interface TicketSelectionProps {
   event: EventType;
+  eventBookings: any;
 }
 
-export default function TicketSelection({ event }: TicketSelectionProps) {
+export default function TicketSelection({
+  event,
+  eventBookings,
+}: TicketSelectionProps) {
   const [ticketCount, setTicketCount] = useState<number>(1);
   const [selectedTicketType, setSelectedTicketType] = useState<string>(
     event.ticketTypes[0].name
@@ -36,8 +40,35 @@ export default function TicketSelection({ event }: TicketSelectionProps) {
     }
   }, [ticketCount, selectedTicketType]);
 
+  const limits: any = {};
+
+  event.ticketTypes.forEach((ticketType) => {
+    let bookedTickets = 0;
+
+    eventBookings.forEach((booking: any) => {
+      if (booking.ticketType === ticketType.name) {
+        bookedTickets += booking.ticketsCount;
+      }
+    });
+
+    limits[ticketType.name] = ticketType.limit - bookedTickets;
+  });
+
+  // console.log(limits);
+
   const getClientSecret = async () => {
     try {
+      // check if the limit is reached
+      if (limits[selectedTicketType] === 0) {
+        toast.error('Tickes limit reached');
+        return;
+      }
+
+      if (limits[selectedTicketType] < ticketCount) {
+        toast.error(`Only ${limits[selectedTicketType]} tickets left`);
+        return;
+      }
+
       setLoading(true);
       const response = await axios.post('/api/stripe/client-secret', {
         amount: totalAmount * 100,
@@ -76,8 +107,9 @@ export default function TicketSelection({ event }: TicketSelectionProps) {
               onClick={() => setSelectedTicketType(ticketType.name)}
             >
               <h1 className="font-semibold">{ticketType.name}</h1>
-              <h1 className="text-gray-600 text-sm">
+              <h1 className="text-gray-600 text-sm flex justify-between">
                 $ {ticketType.price.toFixed(2)}
+                <span>{limits[ticketType.name]} tickets left</span>
               </h1>
             </div>
           ))}
