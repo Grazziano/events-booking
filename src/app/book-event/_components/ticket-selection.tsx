@@ -124,6 +124,10 @@ export default function TicketSelection({ event }: TicketSelectionProps) {
           <PaymentModal
             showPaymentModal={showPaymentModal}
             setShowPaymentModal={setShowPaymentModal}
+            event={event}
+            ticketType={selectedTicketType}
+            ticketsCount={ticketCount}
+            totalAmount={totalAmount}
           />
         </Elements>
       )}
