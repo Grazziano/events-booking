@@ -21,3 +21,14 @@ export interface EventType {
   user: any;
   _id: string;
 }
+
+export interface BookingType {
+  event: EventType;
+  ticketType: string;
+  ticketsCount: number;
+  totalAmount: number;
+  paymentId: string;
+  user: any;
+  _id: string;
+  createdAt: string;
+}

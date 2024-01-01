@@ -34,7 +34,7 @@ export default function LayoutProvider({ children }: IChildrenProps) {
 
   const menusForUser = [
     { title: 'Home', path: '/' },
-    { title: 'Bookings', path: '/user/bookings' },
+    { title: 'Bookings', path: '/bookings' },
   ];
 
   const getUsersData = async () => {
