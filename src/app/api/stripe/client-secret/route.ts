@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
       amount: amount,
       currency: 'usd',
       metadata: { integration_check: 'accept_a_payment' },
+      description: 'Events Booking Payment',
     });
 
     const clientSecret = paymentIntent.client_secret;

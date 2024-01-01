@@ -24,6 +24,7 @@ export default function TicketSelection({ event }: TicketSelectionProps) {
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [clientSecret, setClientSecret] = useState<string>('');
   const [showPaymentModal, setShowPaymentModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const ticketType = event.ticketTypes.find(
@@ -37,12 +38,15 @@ export default function TicketSelection({ event }: TicketSelectionProps) {
 
   const getClientSecret = async () => {
     try {
+      setLoading(true);
       const response = await axios.post('/api/stripe/client-secret', {
         amount: totalAmount * 100,
       });
       setClientSecret(response.data.clientSecret);
     } catch (error: any) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -106,14 +110,21 @@ export default function TicketSelection({ event }: TicketSelectionProps) {
         <h1 className="font-semibold text-2xl uppercase text-gray-500">
           Total Amount: $ {totalAmount}
         </h1>
-        <Button color="primary" onClick={() => setShowPaymentModal(true)}>
+        <Button
+          color="primary"
+          onClick={() => setShowPaymentModal(true)}
+          isLoading={loading}
+        >
           Book Now
         </Button>
       </div>
 
       {showPaymentModal && clientSecret && (
         <Elements stripe={stripePromise} options={{ clientSecret }}>
-          <PaymentModal />
+          <PaymentModal
+            showPaymentModal={showPaymentModal}
+            setShowPaymentModal={setShowPaymentModal}
+          />
         </Elements>
       )}
     </div>
