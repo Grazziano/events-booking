@@ -16,9 +16,9 @@ interface GetProperty {
 export default async function Bookings() {
   const mongoUserId = await getMongoDBUserIDOfLoggedInUser();
 
-  const bookedEvents: BookingType[] = (await BookingModel.find({
-    user: mongoUserId,
-  }).populate('event')) as any;
+  const bookedEvents: BookingType[] = (await BookingModel.find({})
+    .populate('event')
+    .populate('user')) as any;
 
   const getProperty = ({ key, value }: GetProperty) => {
     return (
@@ -31,7 +31,7 @@ export default async function Bookings() {
 
   return (
     <div>
-      <PageTitle title="My Bookings" />
+      <PageTitle title="All Bookings" />
 
       <div className="flex flex-col gap-5 mt-5">
         {bookedEvents.map((booking) => {
@@ -57,6 +57,11 @@ export default async function Bookings() {
 
               <div className="grid grid-cols-3 gap-5 p-3">
                 {getProperty({ key: 'Booking Id', value: booking._id })}
+                {getProperty({ key: 'User Id', value: booking.user._id })}
+                {getProperty({
+                  key: 'User Name',
+                  value: booking.user.username,
+                })}
                 {getProperty({ key: 'Ticket Type', value: booking.ticketType })}
                 {getProperty({
                   key: 'Ticket Count',
