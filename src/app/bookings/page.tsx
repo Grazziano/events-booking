@@ -71,6 +71,10 @@ export default async function Bookings() {
                   key: 'Booked On',
                   value: dayjs(booking.createdAt).format('DD/MM/YYYY hh:mm A'),
                 })}
+                {getProperty({
+                  key: 'Status',
+                  value: booking.status || 'booked',
+                })}
               </div>
             </div>
           );
