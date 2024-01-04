@@ -6,6 +6,7 @@ import {
 import EventModel from '@/models/event-model';
 import { EventType } from '@/interfaces/events';
 import Link from 'next/link';
+import Filters from '@/components/Filters';
 
 connectDB();
 
@@ -20,6 +21,8 @@ export default async function Home() {
 
   return (
     <div>
+      <Filters />
+
       <div className="flex flex-col gap-5">
         {events.map((event) => (
           <div
