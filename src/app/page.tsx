@@ -52,7 +52,7 @@ export default async function Home({ searchParams }: Props) {
         {events.map((event) => (
           <div
             key={event._id}
-            className="grid grid-cols-3 bg-white rounded-sm gap-10 border border-gray-200"
+            className="grid grid-cols-1 md:grid-cols-3 bg-white rounded-sm md:gap-10 border border-gray-200"
           >
             <div className="col-span-1">
               <img

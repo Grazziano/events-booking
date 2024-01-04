@@ -94,7 +94,7 @@ export default function TicketSelection({
           Select Ticket Type
         </h1>
 
-        <div className="grid grid-cols-4 gap-10 mt-2">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-2">
           {event.ticketTypes.map((ticketType) => (
             <div
               key={ticketType.name}
@@ -139,7 +139,7 @@ export default function TicketSelection({
       </div>
 
       <div className="mt-7 bg-gray-100 border border-gray-200 p-3 flex justify-between items-center">
-        <h1 className="font-semibold text-2xl uppercase text-gray-500">
+        <h1 className="font-semibold md:text-2xl text-xl uppercase text-gray-500">
           Total Amount: $ {totalAmount}
         </h1>
         <Button

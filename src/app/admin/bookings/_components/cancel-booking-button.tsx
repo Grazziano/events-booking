@@ -30,7 +30,7 @@ export default function CancelBookingButton({
   };
 
   return (
-    <div className="p-3">
+    <div className="p-3 flex justify-end w-full">
       <Button color="warning" onClick={cancelBooking} isLoading={loading}>
         Cancel Booking
       </Button>

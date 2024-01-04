@@ -32,7 +32,7 @@ export default async function BookEventPage({ params }: Props) {
   return (
     <div className="bg-white">
       <div className="bg-gray-700 p-5 text-white flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold">{event.name}</h1>
+        <h1 className="md:text-3xl text-xl font-semibold">{event.name}</h1>
 
         <div className="text-sm flex gap-10 text-gray-200">
           <h1>
@@ -61,7 +61,7 @@ export default async function BookEventPage({ params }: Props) {
 
         <p className="text-gray-500 w-full text-sm mt-7">{event.description}</p>
 
-        <div className="mt-7 bg-gray-100 border border-gray-200 p-3 rounded-sm grid grid-cols-3 gap-5">
+        <div className="mt-7 bg-gray-100 border border-gray-200 p-3 rounded-sm grid grid-cols-1 md:grid-cols-3 gap-5">
           {getEventProperty('organizer')}
           {getEventProperty('location')}
           {getEventProperty('date')}
