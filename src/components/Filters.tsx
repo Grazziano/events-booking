@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Button } from '@nextui-org/react';
 
 interface IFilter {
   name: string;
@@ -25,7 +26,7 @@ export default function Filters() {
   }, [filters.date]);
 
   return (
-    <div className="bg-white p-5 rounded-sm mb-5 flex gap-5">
+    <div className="bg-white p-5 rounded-sm mb-5 flex gap-5 items-end">
       <div className="w-full">
         <h1 className="text-sm text-gray-500">Search for an event by name</h1>
         <input
@@ -46,6 +47,20 @@ export default function Filters() {
           placeholder="Search for an event"
           className="w-full p-2 rounded-sm border border-gray-200"
         />
+      </div>
+
+      <div className="w-60">
+        <Button
+          className="px-5"
+          onClick={() =>
+            setFilters({
+              name: '',
+              date: '',
+            })
+          }
+        >
+          Clear Filters
+        </Button>
       </div>
     </div>
   );

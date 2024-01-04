@@ -10,12 +10,37 @@ import Filters from '@/components/Filters';
 
 connectDB();
 
-export default async function Home() {
+interface Props {
+  searchParams: {
+    name: string;
+    date: string;
+  };
+}
+
+export default async function Home({ searchParams }: Props) {
   await handleNewUserRegistration();
 
   const mongoUserId = await getMongoDBUserIDOfLoggedInUser();
 
-  const events: EventType[] = (await EventModel.find({}).sort({
+  let filters = {};
+
+  if (searchParams.name) {
+    filters = {
+      name: {
+        $regex: searchParams.name,
+        $options: 'i',
+      },
+    };
+  }
+
+  if (searchParams.date) {
+    filters = {
+      ...filters,
+      date: searchParams.date,
+    };
+  }
+
+  const events: EventType[] = (await EventModel.find(filters).sort({
     createdAt: -1,
   })) as any;
 
@@ -66,6 +91,12 @@ export default async function Home() {
           </div>
         ))}
       </div>
+
+      {events.length === 0 && (
+        <div className="w-full mt-100 flex justify-center">
+          <h1 className="text-sm">No events found for your search</h1>
+        </div>
+      )}
     </div>
   );
 }
