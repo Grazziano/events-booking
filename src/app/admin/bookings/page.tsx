@@ -39,7 +39,7 @@ export default async function Bookings() {
               className="border border-gray-300 bg-gray-100 flex flex-col gap-5"
             >
               <div className="bg-gray-700 p-3 text-white flex md:flex-row flex-col justify-between md:items-center">
-                <div>
+                <div className="lg:w-full">
                   <h1 className="md:text-2xl text-xl font-semibold">
                     {booking.event.name}
                   </h1>
