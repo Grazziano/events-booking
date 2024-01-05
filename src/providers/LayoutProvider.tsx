@@ -23,6 +23,7 @@ export default function LayoutProvider({ children }: IChildrenProps) {
   const router = useRouter();
   const [menusToShow, setMenusToShow] = useState<IMenus[]>([]);
   const isPrivateRoute = !['/sign-in', '/sign-up'].includes(pathname);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   const menusForAdmin = [
     { title: 'Home', path: '/' },
@@ -43,6 +44,7 @@ export default function LayoutProvider({ children }: IChildrenProps) {
 
       if (response.data.user.isAdmin) {
         setMenusToShow(menusForAdmin);
+        setIsAdmin(true);
       } else {
         setMenusToShow(menusForUser);
       }
@@ -92,7 +94,11 @@ export default function LayoutProvider({ children }: IChildrenProps) {
         </div>
       )}
 
-      <div className="py-3">{children}</div>
+      <div className="py-3">
+        {!isAdmin && pathname.includes('admin')
+          ? 'You are not authorized to view this page'
+          : children}
+      </div>
     </div>
   );
 }
